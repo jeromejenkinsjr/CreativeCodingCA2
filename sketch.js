@@ -4,9 +4,8 @@ let lineSpacing = 40;
 let lines = [];
 let playerSpeed = 5;
 let playerVelY = 0;
-
 function setup() {
-	createCanvas(400, 600);
+	let canvas = createCanvas(400, 600);
 	player = new Player();
 	for (let y = 0; y < height; y += lineSpacing) {
 		lines.push(y);
