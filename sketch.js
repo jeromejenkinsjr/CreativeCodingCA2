@@ -4,12 +4,20 @@ let lineSpacing = 40;
 let lines = [];
 let playerSpeed = 5;
 let playerVelY = 0;
+let emp;
+let EMP_ACTIVE = false;
+
 function setup() {
 	let canvas = createCanvas(400, 600);
 	player = new Player();
 	for (let y = 0; y < height; y += lineSpacing) {
 		lines.push(y);
 	}
+}
+
+function mousePressed() {
+	emp = new EMPWave(mouseX, mouseY);
+	EMP_ACTIVE = true;
 }
 
 function draw() {
@@ -35,4 +43,18 @@ function draw() {
 
 	player.update();
 	player.display();
+
+	if (EMP_ACTIVE) {
+		emp.update();
+		emp.display();
+	
+		if (emp.affects(player)) {
+			player.applyEMPEffect(emp);
+		}
+	}
+	
+	if (!EMP_ACTIVE) {
+		player.weight = 3;
+	}
+	
 }
