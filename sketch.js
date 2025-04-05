@@ -13,13 +13,17 @@ function setup() {
 	for (let y = 0; y < height; y += lineSpacing) {
 		lines.push(y);
 	}
-}
 
+	canvas.elt.oncontextmenu = (e) => {
+		e.preventDefault();
+	}; // This disables the context menu only in the confines of the canvas. (So that when EMP is used with right-click, the browser's context menu doesn't get in the way of the content.)
+}
 function mousePressed() {
-	emp = new EMPWave(mouseX, mouseY);
-	EMP_ACTIVE = true;
+	if (mouseButton === RIGHT) {
+		emp = new EMPWave(mouseX, mouseY);
+		EMP_ACTIVE = true;
+	}
 }
-
 function draw() {
 	background(220);
 	stroke(0);
@@ -47,14 +51,13 @@ function draw() {
 	if (EMP_ACTIVE) {
 		emp.update();
 		emp.display();
-	
+
 		if (emp.affects(player)) {
 			player.applyEMPEffect(emp);
 		}
 	}
-	
+
 	if (!EMP_ACTIVE) {
 		player.weight = 3;
 	}
-	
 }
