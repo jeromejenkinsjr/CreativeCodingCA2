@@ -33,7 +33,7 @@ class Player {
 		let targetAngle = atan2(mouseY - this.y, mouseX - this.x);
 		let baseTurnSpeed = 0.05;
 		let effectiveTurnSpeed = baseTurnSpeed / (1 + (this.weight - 1) * 0.1);
-		this.rotation = lerp(this.rotation, targetAngle, effectiveTurnSpeed);
+		this.rotation = lerpAngle(this.rotation, targetAngle, effectiveTurnSpeed);
 	}
 
 	display() {

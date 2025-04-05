@@ -3,7 +3,7 @@ let laneWidth = 200;
 let lineSpacing = 40;
 let lines = [];
 let playerSpeed = 5;
-let playerVelY = 0;
+let scrollSpeed = 0;
 let emp;
 let EMP_ACTIVE = false;
 
@@ -31,9 +31,9 @@ function draw() {
 	line(width / 2 - laneWidth / 2, 0, width / 2 - laneWidth / 2, height);
 	line(width / 2 + laneWidth / 2, 0, width / 2 + laneWidth / 2, height);
 
-	if (playerVelY !== 0) {
+	if (scrollSpeed !== 0) {
 		for (let i = 0; i < lines.length; i++) {
-			lines[i] += playerVelY;
+			lines[i] += scrollSpeed;
 			if (lines[i] > height) lines[i] -= height + lineSpacing;
 			if (lines[i] < -lineSpacing) lines[i] += height + lineSpacing;
 		}
@@ -61,3 +61,14 @@ function draw() {
 		player.weight = 3;
 	}
 }
+
+// Helper function for smooth angle interpolation
+function lerpAngle(current, target, t) {
+	let diff = target - current;
+	// Wrap diff to the range [-PI, PI]
+	while (diff < -PI) diff += TWO_PI;
+	while (diff > PI) diff -= TWO_PI;
+	return current + diff * t;
+}
+
+// Note to self: Explanation for lerpAngle - the regular lep() method goes the long way to rotate to larger angles. To find the shortest path, lerpAngle always compares current angle to the target angle, finds the difference and rotates fractionally.
