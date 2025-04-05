@@ -12,6 +12,7 @@ let lasers = [];
 let zombies = [];
 let zombieSpawnRate = 120;
 let fullHeart, greyHeart;
+let laserSound, empSound;
 
 function preload() {
 	empIcon = loadImage("assets/images/empicon.png");
@@ -20,6 +21,8 @@ function preload() {
 	laserIcon = loadImage("assets/images/laser.png");
 	fullHeart = loadImage("assets/images/fheart.png");
 	greyHeart = loadImage("assets/images/gheart.png");
+	laserSound = loadSound("assets/audio/laser.mp3");
+	empSound = loadSound("assets/audio/emp.mp3");
 }
 
 function setup() {
@@ -38,9 +41,15 @@ function mousePressed() {
 	if (mouseButton === RIGHT) {
 		emp = new EMPWave(mouseX, mouseY);
 		EMP_ACTIVE = true;
+		if (empSound && !empSound.isPlaying()) {
+			empSound.play();
+		}
 	} else if (mouseButton === LEFT) {
 		let laser = new Laser(createVector(player.x, player.y), player.rotation);
 		lasers.push(laser);
+		if (laserSound && !laserSound.isPlaying()) {
+			laserSound.play();
+		}
 	}
 }
 function draw() {
