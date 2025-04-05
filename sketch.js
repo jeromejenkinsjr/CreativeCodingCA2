@@ -8,6 +8,7 @@ let emp;
 let EMP_ACTIVE = false;
 let empIcon, rightMouseIcon;
 let score = 0;
+let lasers = [];
 
 function preload() {
 	empIcon = loadImage("assets/images/empicon.png");
@@ -31,6 +32,9 @@ function mousePressed() {
 	if (mouseButton === RIGHT) {
 		emp = new EMPWave(mouseX, mouseY);
 		EMP_ACTIVE = true;
+	} else if (mouseButton === LEFT) {
+		let laser = new Laser(createVector(player.x, player.y), player.rotation);
+		lasers.push(laser);
 	}
 }
 function draw() {
@@ -58,6 +62,15 @@ function draw() {
 
 	player.update();
 	player.display();
+
+	for (let i = lasers.length - 1; i >= 0; i--) {
+		lasers[i].update();
+		lasers[i].display();
+
+		if (!lasers[i].alive) {
+			lasers.splice(i, 1);
+		}
+	}
 
 	if (EMP_ACTIVE) {
 		emp.update();
