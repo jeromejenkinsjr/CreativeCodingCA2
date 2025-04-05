@@ -11,6 +11,8 @@ let empIcon, rightMouseIcon;
 function preload() {
 	empIcon = loadImage("assets/images/empicon.png");
 	rightMouseIcon = loadImage("assets/images/rightmouse.png");
+	leftMouseIcon = loadImage("assets/images/leftmouse.png");
+	laserIcon = loadImage("assets/images/laser.png");
 }
 
 function setup() {
@@ -29,7 +31,7 @@ function mousePressed() {
 		emp = new EMPWave(mouseX, mouseY);
 		EMP_ACTIVE = true;
 	}
-}
+};
 function draw() {
 	background(220);
 	stroke(0);
@@ -46,9 +48,11 @@ function draw() {
 	}
 
 	for (let y of lines) {
+		push();
 		stroke(0);
 		strokeWeight(4);
 		line(width / 2, y, width / 2, y + 20);
+		pop()
 	}
 
 	player.update();
@@ -66,6 +70,21 @@ function draw() {
 	if (!EMP_ACTIVE) {
 		player.weight = 3;
 	}
+
+	drawHUD();
+}
+
+function drawHUD() {
+	fill(255);
+	textSize(20);
+	textAlign(LEFT, CENTER);
+	text("EMP", 20, height - 40);
+	image(empIcon, 70, height - 55, 30, 30);
+	image(rightMouseIcon, 110, height - 55, 30, 30);
+
+	text("Laser", 20, height - 80);
+	image(laserIcon, 75, height - 95, 30, 30);
+	image(leftMouseIcon, 110, height - 95, 30, 30);
 }
 
 // Helper function for smooth angle interpolation

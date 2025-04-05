@@ -16,10 +16,12 @@ class EMPWave {
 	}
 
 	display() {
+		push();
 		noFill();
 		stroke(0, 255, 255, 200 * this.intensity);
 		strokeWeight(2);
 		ellipse(this.position.x, this.position.y, this.radius * 2);
+		pop();
 	}
 
 	affects(player) {
