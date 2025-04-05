@@ -6,6 +6,12 @@ let playerSpeed = 5;
 let scrollSpeed = 0;
 let emp;
 let EMP_ACTIVE = false;
+let empIcon, rightMouseIcon;
+
+function preload() {
+	empIcon = loadImage("assets/images/empicon.png");
+	rightMouseIcon = loadImage("assets/images/rightmouse.png");
+}
 
 function setup() {
 	let canvas = createCanvas(400, 600);
