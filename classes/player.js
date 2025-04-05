@@ -9,7 +9,7 @@ class Player {
 
 	update() {
 		let effectiveSpeed = playerSpeed / this.weight;
-		playerVelY = 0;
+		scrollSpeed = 0;
 
 		if (
 			keyIsDown(65) &&
@@ -24,20 +24,16 @@ class Player {
 			this.x += effectiveSpeed;
 		}
 		if (keyIsDown(87)) {
-			playerVelY = effectiveSpeed;
+			scrollSpeed = effectiveSpeed;
 		}
 		if (keyIsDown(83)) {
-			playerVelY = -effectiveSpeed;
+			scrollSpeed = -effectiveSpeed;
 		}
 
+		let targetAngle = atan2(mouseY - this.y, mouseX - this.x);
 		let baseTurnSpeed = 0.05;
 		let effectiveTurnSpeed = baseTurnSpeed / (1 + (this.weight - 1) * 0.1);
-		if (keyIsDown(LEFT_ARROW)) {
-			this.rotation -= effectiveTurnSpeed;
-		}
-		if (keyIsDown(RIGHT_ARROW)) {
-			this.rotation += effectiveTurnSpeed;
-		}
+		this.rotation = lerp(this.rotation, targetAngle, effectiveTurnSpeed);
 	}
 
 	display() {
