@@ -30,4 +30,8 @@ class Laser {
 		line(this.pos.x, this.pos.y, end.x, end.y);
 		pop();
 	}
+
+    hits(zombie) {
+        return dist(this.pos.x, this.pos.y, zombie.pos.x, zombie.pos.y) < zombie.size / 2;
+    }
 }

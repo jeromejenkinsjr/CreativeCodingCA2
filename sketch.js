@@ -101,6 +101,22 @@ function draw() {
 		zombies[i].update(player);
 		zombies[i].display();
 	}
+
+	for (let i = zombies.length - 1; i >= 0; i--) {
+		const z = zombies[i];
+	
+		for (let j = lasers.length - 1; j >= 0; j--) {
+			const l = lasers[j];
+	
+			if (l.hits(z)) {
+				// Remove both laser and zombie
+				zombies.splice(i, 1);
+				lasers.splice(j, 1);
+				score += 100;
+				break;
+			}
+		}
+	}
 }
 
 function drawHUD() {
