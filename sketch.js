@@ -7,6 +7,7 @@ let scrollSpeed = 0;
 let emp;
 let EMP_ACTIVE = false;
 let empIcon, rightMouseIcon;
+let score = 0;
 
 function preload() {
 	empIcon = loadImage("assets/images/empicon.png");
@@ -31,7 +32,7 @@ function mousePressed() {
 		emp = new EMPWave(mouseX, mouseY);
 		EMP_ACTIVE = true;
 	}
-};
+}
 function draw() {
 	background(220);
 	stroke(0);
@@ -52,7 +53,7 @@ function draw() {
 		stroke(0);
 		strokeWeight(4);
 		line(width / 2, y, width / 2, y + 20);
-		pop()
+		pop();
 	}
 
 	player.update();
@@ -72,6 +73,7 @@ function draw() {
 	}
 
 	drawHUD();
+	drawScore();
 }
 
 function drawHUD() {
@@ -85,6 +87,13 @@ function drawHUD() {
 	text("Laser", 20, height - 80);
 	image(laserIcon, 75, height - 95, 30, 30);
 	image(leftMouseIcon, 110, height - 95, 30, 30);
+}
+
+function drawScore() {
+	fill(255);
+	textSize(20);
+	textAlign(RIGHT, TOP);
+	text("Score: " + score, width - 20, 20);
 }
 
 // Helper function for smooth angle interpolation
