@@ -24,8 +24,8 @@ class EMPWave {
 		pop();
 	}
 
-	affects(player) {
-		let d = dist(this.position.x, this.position.y, player.x, player.y);
+	affects(entity) {
+		let d = dist(this.position.x, this.position.y, entity.x ?? entity.pos.x, entity.y ?? entity.pos.y);
 		return d < this.radius;
 	}
 }

@@ -17,6 +17,8 @@ function preload() {
 	rightMouseIcon = loadImage("assets/images/rightmouse.png");
 	leftMouseIcon = loadImage("assets/images/leftmouse.png");
 	laserIcon = loadImage("assets/images/laser.png");
+	fullHeart = loadImage("assets/images/fheart.png");
+	greyHeart = loadImage("assets/images/gheart.png");
 }
 
 function setup() {
@@ -82,14 +84,18 @@ function draw() {
 		if (emp.affects(player)) {
 			player.applyEMPEffect(emp);
 		}
+
+		for (let zombie of zombies) {
+			if (emp.affects(zombie)) {
+				zombie.applyEMPEffect(emp);
+			}
+		}
+		
 	}
 
 	if (!EMP_ACTIVE) {
 		player.weight = 3;
 	}
-
-	drawHUD();
-	drawScore();
 
 	// Spawn zombies every few seconds
 	if (frameCount % zombieSpawnRate === 0) {
@@ -117,6 +123,10 @@ function draw() {
 			}
 		}
 	}
+
+	drawHUD();
+	drawHearts();
+	drawScore();
 }
 
 function drawHUD() {
@@ -137,6 +147,17 @@ function drawScore() {
 	textSize(20);
 	textAlign(RIGHT, TOP);
 	text("Score: " + score, width - 20, 20);
+}
+
+function drawHearts() {
+	let spacing = 40;
+	let startX = 20;
+	let y = height - 120;
+
+	for (let i = 0; i < player.maxHearts; i++) {
+		let img = i < player.hearts ? fullHeart : greyHeart;
+		image(img, startX + i * spacing, y, 32, 32);
+	}
 }
 
 // Helper function for smooth angle interpolation

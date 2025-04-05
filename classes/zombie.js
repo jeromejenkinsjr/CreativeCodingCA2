@@ -1,7 +1,9 @@
 class Zombie {
 	constructor(player) {
 		this.size = 30;
-		this.speed = random(0.5, 1);
+		this.baseSpeed = random(1, 2);
+        this.speed = this.baseSpeed;
+
 		this.color = color(100, random(100, 200), 100);
 
 		let edge = floor(random(4));
@@ -38,4 +40,15 @@ class Zombie {
 		ellipse(this.pos.x, this.pos.y, this.size);
 		pop();
 	}
+
+    applyEMPEffect(emp) {
+        let d = dist(this.pos.x, this.pos.y, emp.position.x, emp.position.y);
+        let strength = map(d, 0, emp.radius, 1, 0);
+        strength = constrain(strength, 0, 1);
+    
+        let push = p5.Vector.sub(this.pos.copy(), emp.position).normalize().mult(strength * 2);
+        this.pos.add(push);
+    
+        this.speed = this.baseSpeed * (1 - 0.5 * strength);
+    }
 }

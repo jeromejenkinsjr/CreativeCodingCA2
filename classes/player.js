@@ -5,6 +5,9 @@ class Player {
 		this.y = height / 3;
 		this.weight = 3;
 		this.rotation = 0;
+		this.maxHearts = 5;
+		this.hearts = this.maxHearts;
+		this.lastDamageTimes = {};
 	}
 
 	update() {
