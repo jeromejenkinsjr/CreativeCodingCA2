@@ -13,6 +13,7 @@ let zombies = [];
 let zombieSpawnRate = 120;
 let fullHeart, greyHeart;
 let laserSound, empSound;
+let isGameOver = false;
 
 function preload() {
 	empIcon = loadImage("assets/images/empicon.png");
@@ -100,7 +101,6 @@ function draw() {
 				zombie.applyEMPEffect(emp);
 			}
 		}
-		
 	}
 
 	if (!EMP_ACTIVE) {
@@ -125,14 +125,14 @@ function draw() {
 				break;
 			}
 		}
-	
+
 		let d = dist(z.pos.x, z.pos.y, player.x, player.y);
 		let collisionDist = z.size / 2 + player.size / 2;
-	
+
 		if (d < collisionDist) {
 			let now = millis();
 			let zID = i;
-	
+
 			if (!player.lastDamageTimes[zID]) {
 				player.hearts--;
 				player.lastDamageTimes[zID] = now;
@@ -140,7 +140,7 @@ function draw() {
 				player.hearts--;
 				player.lastDamageTimes[zID] = now;
 			}
-	
+
 			player.hearts = max(0, player.hearts);
 		} else {
 			delete player.lastDamageTimes[i];
@@ -151,13 +151,18 @@ function draw() {
 	drawHearts();
 	drawScore();
 
-	if (player.hearts <= 0) {
+	if (player.hearts <= 0 && !isGameOver) {
+		isGameOver = true;
 		noLoop();
 		textSize(40);
 		fill(255, 0, 0);
 		textAlign(CENTER, CENTER);
 		text("Game Over", width / 2, height / 2);
-	}	
+
+		textSize(20);
+		fill(255);
+		text("Press 'R' to Restart", width / 2, height / 2 + 40);
+	}
 }
 
 function drawHUD() {
@@ -181,13 +186,13 @@ function drawScore() {
 }
 
 function drawHearts() {
-	let spacing = 40;
-	let startX = 20;
-	let y = height - 120;
+	let spacing = 25;
+	let startX = width - 130;
+	let y = 55;
 
 	for (let i = 0; i < player.maxHearts; i++) {
 		let img = i < player.hearts ? fullHeart : greyHeart;
-		image(img, startX + i * spacing, y, 32, 32);
+		image(img, startX + i * spacing, y, 24, 24);
 	}
 }
 
@@ -201,3 +206,24 @@ function lerpAngle(current, target, t) {
 }
 
 // Note to self: Explanation for lerpAngle - the regular lep() method goes the long way to rotate to larger angles. To find the shortest path, lerpAngle always compares current angle to the target angle, finds the difference and rotates fractionally.
+
+function keyPressed() {
+	if (isGameOver && (key === 'r' || key === 'R')) {
+		resetGame();
+	}
+}
+
+function resetGame() {
+	player = new Player();
+	zombies = [];
+	lasers = [];
+	score = 0;
+	isGameOver = false;
+	EMP_ACTIVE = false;
+	scrollSpeed = 0;
+	lines = [];
+	for (let y = 0; y < height; y += lineSpacing) {
+		lines.push(y);
+	}
+	loop();
+}
