@@ -9,6 +9,8 @@ let EMP_ACTIVE = false;
 let empIcon, rightMouseIcon;
 let score = 0;
 let lasers = [];
+let zombies = [];
+let zombieSpawnRate = 120;
 
 function preload() {
 	empIcon = loadImage("assets/images/empicon.png");
@@ -23,6 +25,7 @@ function setup() {
 	for (let y = 0; y < height; y += lineSpacing) {
 		lines.push(y);
 	}
+	zombies.push(new Zombie(player));
 
 	canvas.elt.oncontextmenu = (e) => {
 		e.preventDefault();
@@ -87,6 +90,17 @@ function draw() {
 
 	drawHUD();
 	drawScore();
+
+	// Spawn zombies every few seconds
+	if (frameCount % zombieSpawnRate === 0) {
+		zombies.push(new Zombie(player));
+	}
+
+	// Update and draw zombies
+	for (let i = zombies.length - 1; i >= 0; i--) {
+		zombies[i].update(player);
+		zombies[i].display();
+	}
 }
 
 function drawHUD() {
