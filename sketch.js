@@ -11,6 +11,7 @@ let score = 0;
 let lasers = [];
 let zombies = [];
 let zombieSpawnRate = 120;
+let fullHeart, greyHeart;
 
 function preload() {
 	empIcon = loadImage("assets/images/empicon.png");
@@ -102,31 +103,52 @@ function draw() {
 		zombies.push(new Zombie(player));
 	}
 
-	// Update and draw zombies
-	for (let i = zombies.length - 1; i >= 0; i--) {
-		zombies[i].update(player);
-		zombies[i].display();
-	}
-
 	for (let i = zombies.length - 1; i >= 0; i--) {
 		const z = zombies[i];
-	
+		z.update(player);
+		z.display();
 		for (let j = lasers.length - 1; j >= 0; j--) {
 			const l = lasers[j];
-	
 			if (l.hits(z)) {
-				// Remove both laser and zombie
 				zombies.splice(i, 1);
 				lasers.splice(j, 1);
 				score += 100;
 				break;
 			}
 		}
+	
+		let d = dist(z.pos.x, z.pos.y, player.x, player.y);
+		let collisionDist = z.size / 2 + player.size / 2;
+	
+		if (d < collisionDist) {
+			let now = millis();
+			let zID = i;
+	
+			if (!player.lastDamageTimes[zID]) {
+				player.hearts--;
+				player.lastDamageTimes[zID] = now;
+			} else if (now - player.lastDamageTimes[zID] > 3000) {
+				player.hearts--;
+				player.lastDamageTimes[zID] = now;
+			}
+	
+			player.hearts = max(0, player.hearts);
+		} else {
+			delete player.lastDamageTimes[i];
+		}
 	}
 
 	drawHUD();
 	drawHearts();
 	drawScore();
+
+	if (player.hearts <= 0) {
+		noLoop();
+		textSize(40);
+		fill(255, 0, 0);
+		textAlign(CENTER, CENTER);
+		text("Game Over", width / 2, height / 2);
+	}	
 }
 
 function drawHUD() {
